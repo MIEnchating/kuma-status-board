@@ -90,7 +90,6 @@ type OpenAIStatusItem = {
 
 const config = useRuntimeConfig()
 const refreshSeconds = computed(() => Math.max(300, Number(config.public.refreshSeconds) || 300))
-const refreshIntervalLabel = computed(() => `${Math.round(refreshSeconds.value / 60)} 分钟`)
 
 const { data, error, refresh } = await useFetch<StatusPayload>('/api/status', {
   default: () => null
@@ -331,16 +330,6 @@ function openaiItemClass(tone: OpenAIStatusItem['tone']) {
 
 <template>
   <main class="page-shell" :class="statusClass(overall?.tone)">
-    <header class="topbar">
-      <div class="brand-lockup">
-        <div class="brand-mark" aria-hidden="true">✶</div>
-        <div>
-          <p>每 {{ refreshIntervalLabel }}自动更新</p>
-          <h1>{{ pageTitle }}</h1>
-        </div>
-      </div>
-    </header>
-
     <div v-if="error" class="notice is-error">
       <AlertTriangle :size="18" />
       <span>{{ error.statusMessage || error.message }}</span>
